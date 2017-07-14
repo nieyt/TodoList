@@ -1,0 +1,6 @@
+{
+  "presets": [
+    ["es2015", {"modules": false}], // webpack 2 本身已支持es6 module
+    "react"
+  ]
+}
