@@ -2,16 +2,16 @@ const path = require('path')
 const root = __dirname
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const folderName=process.argv[2]
-const webpack = require('webpack')
 
 let SRC_PATH = path.resolve(root,folderName,'./src/index.js');
 let BUILD_PATH = path.resolve(root,folderName, 'dest');
 
-let config = {
-  entry: SRC_PATH
+module.exports = {
+  entry: [SRC_PATH]
   ,output: {
     filename: 'index.js'
     ,path: BUILD_PATH
+    ,publicPath: '/'
   }
   ,module: {
     loaders: [
@@ -24,12 +24,7 @@ let config = {
       ,template: path.resolve(root,folderName, 'template.html')
     })
   ]
-}
-
-webpack(config).run((err,stats)=>{
-  if(err) {
-    console.log(err,stats);
-    return;
+  ,devServer:{
+    inline: true
   }
-  console.log('编译完成')
-});
+}
