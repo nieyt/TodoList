@@ -67,8 +67,8 @@ class App extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            todos:[]
-
+            todos:[],
+            select: 0 //底部选择todo状态 0：all | 1：active | 2：complete
         }
     }
     //add todo
@@ -95,15 +95,35 @@ class App extends React.Component{
         })
     }
     //filter
-    filterItem(){
-
+    filterItem(status){
+        this.setState({select: status});
     }
     render(){
+        let showState = [];
+        switch (this.state.select){
+            case 0:
+                showState = this.state.todos;
+                break;
+            case 1:
+                this.state.todos.forEach((item) => {
+                    if (!item.complete)
+                        showState.push(item);
+                })
+                break;
+            case 2:
+                this.state.todos.forEach((item) => {
+                    if (item.complete)
+                        showState.push(item);
+                })
+                break;
+            default:
+                showState = this.state.todos;
+        }
         return (
             <div>
                 <AddTodo submit = {this.submit.bind(this)}/>
-                <TodoList todos = {this.state.todos} singleToggle = {this.singleToggle.bind(this)}/>
-                <Footer/>
+                <TodoList todos = {showState} singleToggle = {this.singleToggle.bind(this)}/>
+                <Footer filterItem={this.filterItem.bind(this)}/>
             </div>
         )
     }
