@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react';  
 import ReactDOM from 'react-dom';
 
 class AddTodo extends React.Component{
@@ -39,7 +39,7 @@ class TodoList extends React.Component{
                 {this.props.todos.map((item) => {
                     return (
                         <li key = {item.id} 
-                            onClick = {()=>{this.props.singleToggle(item.id)}}
+                            onClick = {this.props.singleToggle.bind(this,item.id)}
                             style = {item.complete?{textDecoration:'line-through'}:{}}>{item.content}</li>
                     )
                 })}
@@ -52,12 +52,22 @@ class Footer extends React.Component{
     constructor(props){
         super(props);
     }
+    changeFilter(key){
+        this.props.filterItem(+key);
+    }
     render(){
+        let props=this.props;
         return (
-           <p>show &nbsp;
-                <span>All</span>,
-                <span>Active</span>,
-                <span>Completed</span>
+           <p>show: 
+               {
+                props.children.map((item,index) => {
+                    let iProps=item.props;
+                    return (props.select == iProps.value ?
+                             <span key={iProps.value}>{iProps.children}</span>: 
+                             <a href='#' key={iProps.value} onClick={(e)=>{e.preventDefault;this.changeFilter(iProps.value)}}>
+                             {iProps.children}</a>)
+                })
+               }
            </p>
         )
     }
@@ -123,7 +133,11 @@ class App extends React.Component{
             <div>
                 <AddTodo submit = {this.submit.bind(this)}/>
                 <TodoList todos = {showState} singleToggle = {this.singleToggle.bind(this)}/>
-                <Footer filterItem={this.filterItem.bind(this)}/>
+                <Footer filterItem={this.filterItem.bind(this)} select={this.state.select}>
+                    <span value='0'>All</span>
+                    <span value='1'>Active</span>
+                    <span value='2'>Completed</span>
+                </Footer>
             </div>
         )
     }
