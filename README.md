@@ -3,11 +3,9 @@
 
 *使用纯react实现*
 
-start：
+start：npm install ->
 
-npm install
+* 开发环境: node server react -> visit http://localhost:8080/ 
 
-&emsp;&emsp;开发环境: node server react -> visit http://localhost:8080/
-
-&emsp;&emsp;生产环境: node bulid react
+* 生产环境: node bulid react
 
